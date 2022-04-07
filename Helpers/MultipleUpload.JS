@@ -25,7 +25,7 @@ const multipleUpload = () => {
         }
     }
 
-    let multipleUpload = multer({storage: storage, fileFilter: fileFilter}).array('images', 3)
+    let multipleUpload = multer({storage: storage, fileFilter: fileFilter, limits:{ fileSize: 20000 }}).array('images', 3) // fileSize satuan byte
 
     return multipleUpload
 }
