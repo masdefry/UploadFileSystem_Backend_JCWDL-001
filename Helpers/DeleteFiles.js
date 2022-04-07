@@ -1,7 +1,7 @@
 const fs = require('fs')
 
-const deleteFiles = (files) => {
-    files.forEach((value) => {
+const deleteFiles = (pathLocationToDelete) => {
+    pathLocationToDelete.forEach((value) => {
         fs.unlink(value, function(err){
             try {
                 if(err) throw err
