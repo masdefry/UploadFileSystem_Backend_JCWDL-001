@@ -184,6 +184,56 @@ module.exports = {
                 message: error.message
             })
         }
+    },
+
+    getProducts: (req, res) => {
+        let query1 = 'SELECT p.id, p.name, p.description, p.weight, p.stock, pi.id AS image_id, pi.path FROM products p JOIN product_images pi ON pi.products_id = p.id'
+        db.query(query1, (err, result) => {
+            try {
+                if(err) throw err 
+
+                let dataTransformed = []
+
+                result.forEach((value) => {
+                    
+                    let indexProductExist = null
+                    dataTransformed.forEach((val, index) => {
+                        if(val.id === value.id){
+                            indexProductExist = index
+                        }
+                    })
+
+                    if(indexProductExist === null){
+                        dataTransformed.push({
+                            id: value.id,
+                            name: value.name,
+                            price: value.price, 
+                            description: value.description,
+                            weight: value.weight, 
+                            stock: value.stock, 
+                            images: [
+                                {
+                                    image_id: value.image_id, path: value.path
+                                }
+                            ]
+                        })
+                    }else{
+                        dataTransformed[indexProductExist].images.push({image_id: value.image_id, path: value.path})
+                    }
+                })
+
+                res.status(200).send({
+                    error: false, 
+                    message: 'Get Product Success!',
+                    data: dataTransformed
+                })
+            } catch (error) {
+                res.status(400).send({
+                    error: true, 
+                    message: error.message
+                })
+            }
+        })
     }
 }
 
