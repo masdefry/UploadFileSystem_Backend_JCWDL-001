@@ -9,6 +9,8 @@ app.get('/', (req, res) => {
     res.status(200).send('Upload File System API')
 })
 
+app.use('/Public', express.static('Public')) // Memberikan akses ke client untuk mengambil assets image kita
+
 // Import Routers
 const UploadRouter = require('./Routers/UploadRouter')
 app.use('/upload', UploadRouter)

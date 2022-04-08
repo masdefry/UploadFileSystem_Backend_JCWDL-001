@@ -187,7 +187,7 @@ module.exports = {
     },
 
     getProducts: (req, res) => {
-        let query1 = 'SELECT p.id, p.name, p.description, p.weight, p.stock, pi.id AS image_id, pi.path FROM products p JOIN product_images pi ON pi.products_id = p.id'
+        let query1 = 'SELECT p.id, p.name, p.price, p.description, p.weight, p.stock, pi.id AS image_id, pi.path FROM products p JOIN product_images pi ON pi.products_id = p.id'
         db.query(query1, (err, result) => {
             try {
                 if(err) throw err 
@@ -211,6 +211,7 @@ module.exports = {
                             description: value.description,
                             weight: value.weight, 
                             stock: value.stock, 
+                            mainImage: { image_id: value.image_id, path: value.path  },
                             images: [
                                 {
                                     image_id: value.image_id, path: value.path
@@ -240,3 +241,7 @@ module.exports = {
 // Rollback Transaction :
 //  - Begin Transaction
 //  - Query Commit
+
+
+
+// SELECT p.id, p.name, p.description, p.weight, p.stock, pi.id, GROUP_CONCAT(DISTINCT pi.id,'+',pi.path) AS images FROM products p JOIN product_images pi ON pi.products_id = p.id;
